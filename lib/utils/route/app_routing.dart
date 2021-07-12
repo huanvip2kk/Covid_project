@@ -3,7 +3,7 @@ import 'package:covid_19/presentation/common/landing_page/landing_page_route.dar
 import 'package:covid_19/presentation/country/country_screen_route.dart';
 import 'package:covid_19/presentation/detail/country_detail/detail_screen_route.dart';
 import 'package:covid_19/presentation/detail/favorited_detail/favorited_detail_route.dart';
-import 'package:covid_19/presentation/favorited/favorited_model/favorited_model.dart';
+import 'package:covid_19/data/ultils/favorited_model.dart';
 import 'package:covid_19/presentation/favorited/favorited_route.dart';
 import 'package:covid_19/presentation/home/home_screen_route.dart';
 import 'package:covid_19/presentation/login_and_signup/login/login_route.dart';

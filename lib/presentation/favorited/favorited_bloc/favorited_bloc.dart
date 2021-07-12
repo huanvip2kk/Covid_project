@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:covid_19/presentation/favorited/favorited_database_helper/favorited_database_helper.dart';
-import 'package:covid_19/presentation/favorited/favorited_model/favorited_model.dart';
+import 'package:covid_19/data/ultils/favorited_database_helper.dart';
+import 'package:covid_19/data/ultils/favorited_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

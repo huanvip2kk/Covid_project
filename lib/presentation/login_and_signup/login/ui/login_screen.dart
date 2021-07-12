@@ -1,13 +1,21 @@
+import 'package:covid_19/config/app_config.dart';
+import 'package:covid_19/data/api/covid_api.dart';
+import 'package:covid_19/data/reposistory/covid_repo_impl.dart';
+import 'package:covid_19/domain/usecase/covid_usecase.dart';
 import 'package:covid_19/presentation/common/common_widget.dart';
 import 'package:covid_19/presentation/common/landing_page/ui/landing_page.dart';
+import 'package:covid_19/presentation/country/bloc/country_bloc.dart';
+import 'package:covid_19/presentation/home/bloc/home_bloc.dart';
 import 'package:covid_19/presentation/login_and_signup/login/login_bloc/login_bloc.dart';
+import 'package:covid_19/presentation/profile/profile_bloc/profile_bloc.dart';
 import 'package:covid_19/utils/route/app_routing.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -37,6 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  late final String? _error = null;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
@@ -44,7 +54,49 @@ class _LoginScreenState extends State<LoginScreen> {
         if (state is LoginLoadingState) {
           return loading();
         } else if (state is LoginSuccessState) {
-          return const LandingPage();
+          Fluttertoast.cancel();
+          Fluttertoast.showToast(
+              msg: "Login success",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 3,
+              backgroundColor: AppConfig.kPrimaryColor,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          return MultiBlocProvider(providers: [
+            BlocProvider(
+              create: (context) => HomeBloc(
+                CovidUsecase(
+                  CovidRepoImpl(
+                    GetApi(
+                      Dio(),
+                    ),
+                  ),
+                ),
+              )..add(
+                  LoadHomeEvent(),
+                ),
+            ),
+            BlocProvider(
+              create: (context) => CountryBloc(
+                CovidUsecase(
+                  CovidRepoImpl(
+                    GetApi(
+                      Dio(),
+                    ),
+                  ),
+                ),
+              )..add(
+                  LoadCountryEvent(),
+                ),
+            ),
+            BlocProvider(
+              create: (context) => ProfileBloc()
+                ..add(
+                  ProfileLoadEvent(),
+                ),
+            ),
+          ], child: const LandingPage());
         } else if (state is LoginFailureState) {
           late String? _error = state.message;
           Widget showAlert() {
@@ -85,52 +137,50 @@ class _LoginScreenState extends State<LoginScreen> {
           }
 
           return buildLoginScreen(showAlert, context);
-        } else {
-          late String? _error = null;
-          Widget showAlert() {
-            if (_error != null) {
-              return Container(
-                color: Colors.amberAccent,
-                width: double.infinity,
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: <Widget>[
-                    const Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.error_outline),
+        }
+        Widget showAlert() {
+          if (_error != null) {
+            return Container(
+              color: Colors.amberAccent,
+              width: double.infinity,
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.error_outline),
+                  ),
+                  Expanded(
+                    child: Text(
+                      _error.toString(),
                     ),
-                    Expanded(
-                      child: Text(
-                        _error.toString(),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        setState(() {
+                          showToast();
+                        });
+                      },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () {
-                          setState(() {
-                            showToast();
-                          });
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }
-            return const SizedBox(
-              height: 0,
+                  )
+                ],
+              ),
             );
           }
-
-          return buildLoginScreen(showAlert, context);
+          return const SizedBox(
+            height: 0,
+          );
         }
+
+        return buildLoginScreen(showAlert, context);
       },
     );
   }
 
-  Scaffold buildLoginScreen(Widget showAlert(), BuildContext context) {
+  Scaffold buildLoginScreen(Widget Function() showAlert, BuildContext context) {
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -267,7 +317,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           validator: (value) {
                             if (value!.length < 6) {
-                              return 'Password must longer than 6 charactor';
+                              return 'Password must longer than 6 character';
                             }
                             return null;
                           },

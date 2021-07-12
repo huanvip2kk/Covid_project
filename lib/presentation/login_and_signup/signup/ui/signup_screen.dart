@@ -1,10 +1,12 @@
 import 'package:covid_19/config/app_config.dart';
 import 'package:covid_19/presentation/common/common_widget.dart';
+import 'package:covid_19/presentation/login_and_signup/login/login_bloc/login_bloc.dart';
 import 'package:covid_19/presentation/login_and_signup/login/ui/login_screen.dart';
 import 'package:covid_19/presentation/login_and_signup/signup/signup_bloc/signup_bloc.dart';
 import 'package:covid_19/utils/route/app_routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -35,6 +37,8 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
+  late final String? _error = null;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(
@@ -42,13 +46,25 @@ class _SignupScreenState extends State<SignupScreen> {
         if (state is SignupLoadingState) {
           return loading();
         } else if (state is SignupSuccessState) {
-          return const LoginScreen();
+          Fluttertoast.cancel();
+          Fluttertoast.showToast(
+              msg: "Sign up success",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 3,
+              backgroundColor: AppConfig.kPrimaryColor,
+              textColor: Colors.white,
+              fontSize: 16.0);
+          return BlocProvider(
+            create: (context) => LoginBloc(),
+            child: const LoginScreen(),
+          );
         } else if (state is SignupFailureState) {
           late String? _error = state.message;
           Widget showAlert() {
             if (_error != null) {
               return Container(
-                color: AppConfig.kPrimaryColor,
+                color: Colors.amberAccent,
                 width: double.infinity,
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -84,11 +100,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
           return buildSignupScreen(context: context, showAlert: showAlert);
         }
-        late String? _error = null;
         Widget showAlert() {
           if (_error != null) {
             return Container(
-              color: AppConfig.kPrimaryColor,
+              color: Colors.amberAccent,
               width: double.infinity,
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -305,7 +320,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         );
                                   }
                                 },
-                                child: const Text('Signup'),
+                                child: const Text('Sign up'),
                                 style: ButtonStyle(
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(

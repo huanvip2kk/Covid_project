@@ -2,7 +2,7 @@ import 'package:covid_19/config/app_config.dart';
 import 'package:covid_19/presentation/common/common_widget.dart';
 import 'package:covid_19/presentation/common/information_widget.dart';
 import 'package:covid_19/presentation/detail/favorited_detail/favorited_detail_bloc/favorited_detail_bloc.dart';
-import 'package:covid_19/presentation/favorited/favorited_model/favorited_model.dart';
+import 'package:covid_19/data/ultils/favorited_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:covid_19/presentation/favorited/favorited_model/favorited_model.dart';
+import 'package:covid_19/data/ultils/favorited_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart'; // for join
 
