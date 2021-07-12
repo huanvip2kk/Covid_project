@@ -2,10 +2,13 @@ import 'package:covid_19/data/model/countries_model.dart';
 import 'package:covid_19/presentation/common/landing_page/landing_page_route.dart';
 import 'package:covid_19/presentation/country/country_screen_route.dart';
 import 'package:covid_19/presentation/detail/country_detail/detail_screen_route.dart';
+import 'package:covid_19/presentation/detail/favorited_detail/favorited_detail_route.dart';
+import 'package:covid_19/presentation/favorited/favorited_model/favorited_model.dart';
 import 'package:covid_19/presentation/favorited/favorited_route.dart';
 import 'package:covid_19/presentation/home/home_screen_route.dart';
 import 'package:covid_19/presentation/login_and_signup/login/login_route.dart';
 import 'package:covid_19/presentation/login_and_signup/signup/signup_route.dart';
+import 'package:covid_19/presentation/profile/profile_screen_route.dart';
 import 'package:covid_19/presentation/settings/route.dart';
 import 'package:covid_19/presentation/welcome_screen/intro/intro_screen_route.dart';
 import 'package:covid_19/presentation/welcome_screen/splash_screen/splash_screen_route.dart';
@@ -23,7 +26,9 @@ enum RouteDefine {
   settingsScreen,
   chartsScreen,
   userProfileScreen,
-  landingPage
+  landingPage,
+  favoritedDetailScreen,
+  profileScreenRoute
 }
 
 class AppRouting {
@@ -40,6 +45,8 @@ class AppRouting {
       RouteDefine.settingsScreen.name: (_) => SettingsScreenRoute.route,
       RouteDefine.splashScreen.name: (_) => SplashScreenRoute.route,
       RouteDefine.landingPage.name: (_) => LandingPageRoute.route,
+      RouteDefine.profileScreenRoute.name: (_) => ProfileScreenRoute.route,
+      RouteDefine.favoritedDetailScreen.name: (_) => FavoritedDetailScreenRoute.route(settings.arguments as FavoritedModel),
     };
 
     final routeBuilder = routes[settings.name];

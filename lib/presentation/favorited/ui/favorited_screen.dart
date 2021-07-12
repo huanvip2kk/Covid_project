@@ -1,5 +1,4 @@
 import 'package:covid_19/presentation/common/common_widget.dart';
-import 'package:covid_19/presentation/detail/favorited_detail/ui/favorited_detail_screen.dart';
 import 'package:covid_19/presentation/favorited/favorited_bloc/favorited_bloc.dart';
 import 'package:covid_19/utils/route/app_routing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -90,14 +89,11 @@ class _FavoritedScreenState extends State<FavoritedScreen> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(
+                              Navigator.pushNamed(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => FavoritedDetailScreen(
-                                    favoritedModel:
-                                        state.listFavorited!.elementAt(index),
-                                  ),
-                                ),
+                                RouteDefine.favoritedDetailScreen.name,
+                                arguments:
+                                    state.listFavorited!.elementAt(index),
                               );
                             },
                             child: Card(

@@ -5,6 +5,7 @@ import 'package:covid_19/utils/route/app_routing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -31,6 +32,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   String? imageUrl;
+  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
 
   _showPicker() {
     final _picker = ImagePicker();
@@ -80,59 +83,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: BlocProvider(
-        create: (context) => ProfileBloc()
-          ..add(
-            ProfileLoadEvent(),
-          ),
-        child: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (bcontext, state) {
-            if (state is ProfileLoadingState) {
-              return loading();
-            } else if (state is ProfileLoadedState) {
-              if (user == null) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 16, left: 16, right: 16),
-                      child: SizedBox(
-                          width: double.infinity,
-                          height: 300,
-                          child: Card(
-                            elevation: 5,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "You're not login? ",
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (bcontext, state) {
+          if (state is ProfileLoadingState) {
+            return loading();
+          } else if (state is ProfileLoadedState) {
+            if (user == null) {
+              return Column(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 16, right: 16),
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: 300,
+                        child: Card(
+                          elevation: 5,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "You're not login? ",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, RouteDefine.loginScreen.name);
+                                },
+                                child: const Text(
+                                  'login now!',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                       fontSize: 24),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, RouteDefine.loginScreen.name);
-                                  },
-                                  child: const Text(
-                                    'login now!',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 24),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 8, bottom: 8),
                               child: SizedBox(
                                 height: 160,
                                 child: Card(
@@ -144,10 +145,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         child: Align(
                                           alignment: Alignment.bottomLeft,
                                           child: Card(
+                                            color: Colors.red,
                                             elevation: 5,
                                             child: Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                              child: Icon(Icons.favorite),
+                                              padding:
+                                              EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.favorite,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -160,7 +166,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             'Favorited',
                                             style: TextStyle(
                                                 fontSize: 24,
-                                                fontWeight: FontWeight.w500),
+                                                fontWeight:
+                                                FontWeight.w500),
                                           ),
                                         ),
                                       )
@@ -168,203 +175,255 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, RouteDefine.favoritedScreen.name);
-                              },
-                            ),
-                          ),
-                          Expanded(
-                              child: GestureDetector(
-                            child: SizedBox(
-                              height: 160,
-                              child: Card(
-                                elevation: 5,
-                                child: Column(
-                                  children: const [
-                                    Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Card(
-                                          elevation: 5,
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Icon(Icons.settings),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Text(
-                                          'Settings',
-                                          style: TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
                             ),
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, RouteDefine.settingsScreen.name);
+                              Navigator.pushNamed(context,
+                                  RouteDefine.favoritedScreen.name);
                             },
-                          )),
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Expanded(
-                        child: Stack(
-                          children: [
-                            Card(
-                              margin: const EdgeInsets.only(top: 50),
-                              elevation: 5,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 120,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        'Hello ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 24,
-                                        ),
-                                      ),
-                                      Text(
-                                        FirebaseAuth
-                                            .instance.currentUser!.displayName
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 24,
-                                            color: AppConfig.kPrimaryColor),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: SizedBox(
-                                child: CircleAvatar(
-                                  radius: 75.0,
-                                  backgroundColor: AppConfig.kPrimaryColor,
-                                  child: CircleAvatar(
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius: 20.0,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: AppConfig.kPrimaryColor,
-                                          ),
-                                          onPressed: () {
-                                            _showPicker();
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    radius: 60.0,
-                                    backgroundImage: NetworkImage(FirebaseAuth
-                                        .instance.currentUser!.photoURL
-                                        .toString()),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8, bottom: 8),
-                                    child: SizedBox(
-                                      height: 160,
-                                      child: Card(
-                                        elevation: 5,
-                                        child: Column(
-                                          children: const [
-                                            Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Card(
-                                                  color: Colors.red,
-                                                  elevation: 5,
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8.0),
-                                                    child: Icon(
-                                                      Icons.favorite,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
+                        Expanded(
+                            child: GestureDetector(
+                              child: Padding(
+                                padding:
+                                const EdgeInsets.only(left: 8, bottom: 8),
+                                child: SizedBox(
+                                  height: 160,
+                                  child: Card(
+                                    elevation: 5,
+                                    child: Column(
+                                      children: const [
+                                        Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Card(
+                                              color: Colors.blue,
+                                              elevation: 5,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Icon(
+                                                  Icons.settings,
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text(
-                                                  'Favorited',
-                                                  style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Text(
+                                              'Settings',
+                                              style: TextStyle(
+                                                  fontSize: 24,
+                                                  fontWeight:
+                                                  FontWeight.w500),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, RouteDefine.settingsScreen.name);
+                              },
+                            )),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            }
+
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Expanded(
+                      child: Stack(
+                        children: [
+                          Card(
+                            margin: const EdgeInsets.only(top: 50),
+                            elevation: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  height: 120,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Hello ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24,
+                                      ),
+                                    ),
+                                    Text(
+                                      FirebaseAuth
+                                          .instance.currentUser!.displayName
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24,
+                                          color: AppConfig.kPrimaryColor),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: SizedBox(
+                              child: CircleAvatar(
+                                radius: 75.0,
+                                backgroundColor: AppConfig.kPrimaryColor,
+                                child: CircleAvatar(
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 20.0,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: AppConfig.kPrimaryColor,
+                                        ),
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => Form(
+                                              key: _formKey,
+                                              child: AlertDialog(
+                                                elevation: 16,
+                                                content: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Add new course',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 24),
+                                                        ),
+                                                        IconButton(
+                                                          onPressed: () {
+                                                            _showPicker();
+                                                          },
+                                                          icon:const Icon(
+                                                            FontAwesomeIcons
+                                                                .cameraRetro,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 16,
+                                                    ),
+                                                    TextFormField(
+                                                      controller:
+                                                          nameController,
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        labelText: 'Title',
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                      ),
+                                                      validator: (value) {
+                                                        if (value != null &&
+                                                            value.isNotEmpty) {
+                                                          return null;
+                                                        }
+                                                        return 'Cannot empty!';
+                                                      },
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 16,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: const Text(
+                                                              'Cancel'),
+                                                        ),
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            bcontext
+                                                                .read<
+                                                                    ProfileBloc>()
+                                                                .add(
+                                                                  ProfileChangeEvent(
+                                                                      username:
+                                                                          nameController.text),
+                                                                );
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: const Text('Ok'),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
                                                 ),
                                               ),
-                                            )
-                                          ],
-                                        ),
+                                            ),
+                                            barrierDismissible: true,
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),
-                                  onTap: () {
-                                    Navigator.pushNamed(context,
-                                        RouteDefine.favoritedScreen.name);
-                                  },
+                                  radius: 60.0,
+                                  backgroundImage: NetworkImage(FirebaseAuth
+                                      .instance.currentUser!.photoURL
+                                      .toString()),
                                 ),
                               ),
-                              Expanded(
-                                  child: GestureDetector(
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, bottom: 8),
+                                  padding: const EdgeInsets.only(
+                                      right: 8, bottom: 8),
                                   child: SizedBox(
                                     height: 160,
                                     child: Card(
@@ -376,12 +435,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             child: Align(
                                               alignment: Alignment.bottomLeft,
                                               child: Card(
-                                                color: Colors.blue,
+                                                color: Colors.red,
                                                 elevation: 5,
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(8.0),
+                                                  padding:
+                                                      EdgeInsets.all(8.0),
                                                   child: Icon(
-                                                    Icons.settings,
+                                                    Icons.favorite,
                                                     color: Colors.white,
                                                   ),
                                                 ),
@@ -393,7 +453,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             child: Align(
                                               alignment: Alignment.bottomLeft,
                                               child: Text(
-                                                'Settings',
+                                                'Favorited',
                                                 style: TextStyle(
                                                     fontSize: 24,
                                                     fontWeight:
@@ -407,155 +467,206 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                      context, RouteDefine.settingsScreen.name);
+                                  Navigator.pushNamed(context,
+                                      RouteDefine.favoritedScreen.name);
                                 },
-                              )),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
+                              ),
+                            ),
+                            Expanded(
                                 child: GestureDetector(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 8, right: 8),
-                                    child: SizedBox(
-                                      height: 160,
-                                      child: Card(
-                                        elevation: 5,
-                                        child: Column(
-                                          children: const [
-                                            Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Card(
-                                                  color: Colors.orange,
-                                                  elevation: 5,
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8.0),
-                                                    child: Icon(
-                                                      Icons.lightbulb,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8, bottom: 8),
+                                child: SizedBox(
+                                  height: 160,
+                                  child: Card(
+                                    elevation: 5,
+                                    child: Column(
+                                      children: const [
+                                        Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Card(
+                                              color: Colors.blue,
+                                              elevation: 5,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Icon(
+                                                  Icons.settings,
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text(
-                                                  'Sthg',
-                                                  style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-                                            )
-                                          ],
+                                          ),
                                         ),
-                                      ),
+                                        Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Text(
+                                              'Settings',
+                                              style: TextStyle(
+                                                  fontSize: 24,
+                                                  fontWeight:
+                                                      FontWeight.w500),
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child: GestureDetector(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 8, left: 8),
-                                    child: SizedBox(
-                                      height: 160,
-                                      child: Card(
-                                        color: Colors.red,
-                                        elevation: 5,
-                                        child: Column(
-                                          children: const [
-                                            Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Card(
-                                                  color: Colors.red,
-                                                  elevation: 5,
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8.0),
-                                                    child: Icon(
-                                                      Icons.logout,
-                                                      color: Colors.white,
-                                                    ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, RouteDefine.settingsScreen.name);
+                              },
+                            )),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, right: 8),
+                                  child: SizedBox(
+                                    height: 160,
+                                    child: Card(
+                                      elevation: 5,
+                                      child: Column(
+                                        children: const [
+                                          Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Align(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Card(
+                                                color: Colors.orange,
+                                                elevation: 5,
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.all(8.0),
+                                                  child: Icon(
+                                                    Icons.lightbulb,
+                                                    color: Colors.white,
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text(
-                                                  'Logout',
-                                                  style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.white),
-                                                ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Align(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Text(
+                                                'Sthg',
+                                                style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (dialogContext) => AlertDialog(
-                                        title: const Text("Want to logout?"),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(dialogContext).pop();
-                                            },
-                                            child: const Text('Cancel'),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              FirebaseAuth.instance.signOut();
-                                              Navigator.pushReplacementNamed(
-                                                  context,
-                                                  RouteDefine.landingPage.name);
-                                            },
-                                            child: const Text('Ok'),
-                                          ),
+                                            ),
+                                          )
                                         ],
                                       ),
-                                    );
-                                  },
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              );
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, left: 8),
+                                  child: SizedBox(
+                                    height: 160,
+                                    child: Card(
+                                      color: Colors.red,
+                                      elevation: 5,
+                                      child: Column(
+                                        children: const [
+                                          Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Align(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Card(
+                                                color: Colors.red,
+                                                elevation: 5,
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.all(8.0),
+                                                  child: Icon(
+                                                    Icons.logout,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Align(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Text(
+                                                'Logout',
+                                                style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                        FontWeight.w500,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (dialogContext) => AlertDialog(
+                                      title: const Text("Want to logout?"),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(dialogContext).pop();
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            FirebaseAuth.instance.signOut();
+                                            Navigator.pushReplacementNamed(
+                                                context,
+                                                RouteDefine.landingPage.name);
+                                          },
+                                          child: const Text('Ok'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
 
-              /// Sthng
-            } else if (state is ProfileFailureState) {
-              ///Sthng
-            }
-            return loading();
-          },
-        ),
+            /// Sthng
+          } else if (state is ProfileFailureState) {
+            ///Sthng
+          }
+          return loading();
+        },
       ),
     );
   }

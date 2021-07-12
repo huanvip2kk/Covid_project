@@ -39,69 +39,64 @@ class _CountryDetailScreenState extends State<CountryDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CountryDetailBloc()
-        ..add(
-          CountryDetailLoadEvent(),
-        ),
-      child: BlocConsumer<CountryDetailBloc, CountryDetailState>(
-        listener: (context, state) {
-          if (user == null) {
-            if (state is CountriesLoadedState) {
-            } else if (state is AddFavoritedFailureState) {
-              showDialog(
-                context: context,
-                builder: (dialogContext) => AlertDialog(
-                  title: const Text("Login to add favorite"),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(dialogContext).pop();
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, RouteDefine.loginScreen.name);
-                      },
-                      child: const Text('Ok'),
-                    ),
-                  ],
-                ),
-              );
-            }
-          } else {
-            if (state is AddFavoritedSuccessState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Added ' + state.countryName.toString(),
+    return BlocConsumer<CountryDetailBloc, CountryDetailState>(
+      listener: (context, state) {
+        if (user == null) {
+          if (state is CountriesLoadedState) {
+          } else if (state is AddFavoritedFailureState) {
+            showDialog(
+              context: context,
+              builder: (dialogContext) => AlertDialog(
+                title: const Text("Login to add favorite"),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop();
+                    },
+                    child: const Text('Cancel'),
                   ),
-                ),
-              );
-            } else if (state is AddFavoritedFailureState) {
-              ScaffoldMessenger.of(context).removeCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('You have added this'),
-                ),
-              );
-            }
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, RouteDefine.loginScreen.name);
+                    },
+                    child: const Text('Ok'),
+                  ),
+                ],
+              ),
+            );
           }
-        },
-        buildWhen: (context, state) {
-          if (state is AddFavoritedFailureState ||
-              state is AddFavoritedSuccessState) {
-            return false;
+        } else {
+          if (state is AddFavoritedSuccessState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Added ' + state.countryName.toString(),
+                ),
+              ),
+            );
+          } else if (state is AddFavoritedFailureState) {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('You have added this'),
+              ),
+            );
           }
-          return true;
-        },
-        builder: (context, state) {
-          if (state is CountryDetailLoadingState) {
-            return loading();
-          } else if (state is CountryDetailLoadedState) {
-            return Scaffold(
+        }
+      },
+      buildWhen: (context, state) {
+        if (state is AddFavoritedFailureState ||
+            state is AddFavoritedSuccessState) {
+          return false;
+        }
+        return true;
+      },
+      builder: (context, state) {
+        if (state is CountryDetailLoadingState) {
+          return loading();
+        } else if (state is CountryDetailLoadedState) {
+          return Scaffold(
               appBar: AppBar(
                 backgroundColor: AppConfig.kPrimaryColor,
                 elevation: 0,
@@ -124,7 +119,8 @@ class _CountryDetailScreenState extends State<CountryDetailScreen> {
                       onPressed: () async {
                         context.read<CountryDetailBloc>().add(
                               OnPressedFavoriteButtonEvent(
-                                countryName: widget.countries!.name.toString(),
+                                countryName:
+                                    widget.countries!.name.toString(),
                                 flag: widget.countries!.flag.toString(),
                               ),
                             );
@@ -146,16 +142,14 @@ class _CountryDetailScreenState extends State<CountryDetailScreen> {
                 valueRecovered: widget.countries!.recovered as int,
                 valueDeath: widget.countries!.death as int,
                 valueInfected: widget.countries!.infected as int,
-              )
-            );
-          } else if (state is CountryDetailFailureState) {
-            return Text(
-              state.message.toString(),
-            );
-          }
-          return Container();
-        },
-      ),
+              ));
+        } else if (state is CountryDetailFailureState) {
+          return Text(
+            state.message.toString(),
+          );
+        }
+        return Container();
+      },
     );
   }
 }

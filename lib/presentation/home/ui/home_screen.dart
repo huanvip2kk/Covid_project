@@ -1,10 +1,6 @@
 import 'package:covid_19/config/app_config.dart';
-import 'package:covid_19/data/api/covid_api.dart';
-import 'package:covid_19/data/reposistory/covid_repo_impl.dart';
-import 'package:covid_19/domain/usecase/covid_usecase.dart';
 import 'package:covid_19/presentation/common/common_widget.dart';
 import 'package:covid_19/presentation/home/bloc/home_bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,52 +31,45 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
       ),
-      body: BlocProvider(
-        create: (context) => HomeBloc(
-          CovidUsecase(
-            CovidRepoImpl(
-              GetApi(
-                Dio(),
-              ),
-            ),
-          ),
-        )..add(
-            LoadHomeEvent(),
-          ),
-        child: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            if (state is HomeSuccessState) {
-              final String infectedText =
-                  state.worldCovidModel!.infected.toString();
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state is HomeSuccessState) {
+            final String infectedText =
+                state.worldCovidModel!.infected.toString();
 
-              final String newInfectedText =
-                  state.worldCovidModel!.newInfected.toString();
+            final String newInfectedText =
+                state.worldCovidModel!.newInfected.toString();
 
-              final String recoveredText =
-                  state.worldCovidModel!.recovered.toString();
-              final String newRecoveredText =
-                  state.worldCovidModel!.newRecovered.toString();
+            final String recoveredText =
+                state.worldCovidModel!.recovered.toString();
+            final String newRecoveredText =
+                state.worldCovidModel!.newRecovered.toString();
 
-              final String deathText = state.worldCovidModel!.death.toString();
+            final String deathText = state.worldCovidModel!.death.toString();
 
-              final String newDeathText =
-                  state.worldCovidModel!.newDeath.toString();
+            final String newDeathText =
+                state.worldCovidModel!.newDeath.toString();
 
-              return HomeWidget(infectedText: infectedText, newInfectedText: newInfectedText, recoveredText: recoveredText, newRecoveredText: newRecoveredText, deathText: deathText, newDeathText: newDeathText);
-            } else if (state is HomeLoadingState) {
-              return loading();
-            } else if (state is HomeFailState) {
-              return FailureWidget(
-                onPress: () {
-                  context.read<HomeBloc>().add(
-                        LoadHomeEvent(),
-                      );
-                },
-              );
-            }
+            return HomeWidget(
+                infectedText: infectedText,
+                newInfectedText: newInfectedText,
+                recoveredText: recoveredText,
+                newRecoveredText: newRecoveredText,
+                deathText: deathText,
+                newDeathText: newDeathText);
+          } else if (state is HomeLoadingState) {
             return loading();
-          },
-        ),
+          } else if (state is HomeFailState) {
+            return FailureWidget(
+              onPress: () {
+                context.read<HomeBloc>().add(
+                      LoadHomeEvent(),
+                    );
+              },
+            );
+          }
+          return loading();
+        },
       ),
     );
   }
@@ -134,8 +123,7 @@ class HomeWidget extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
                                         Container(
@@ -143,20 +131,17 @@ class HomeWidget extends StatelessWidget {
                                           height: 20,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  const BorderRadius
-                                                      .all(
+                                                  const BorderRadius.all(
                                                 Radius.circular(50),
                                               ),
-                                              color: AppConfig
-                                                  .kPrimaryColor),
+                                              color: AppConfig.kPrimaryColor),
                                         ),
                                         const SizedBox(
                                           width: 10,
                                         ),
                                         Text(
                                           'Infected',
-                                          style: AppConfig
-                                              .kSize24WeightBold,
+                                          style: AppConfig.kSize24WeightBold,
                                           textAlign: TextAlign.center,
                                         ),
                                       ],
@@ -164,15 +149,14 @@ class HomeWidget extends StatelessWidget {
                                   ),
                                   Text(
                                     infectedText,
-                                    style: AppConfig
-                                        .kSize24WeightBoldColorGreen,
+                                    style:
+                                        AppConfig.kSize24WeightBoldColorGreen,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text('New infected +',
                                           style: AppConfig.kSize14),
@@ -197,8 +181,7 @@ class HomeWidget extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
                                         Container(
@@ -206,20 +189,17 @@ class HomeWidget extends StatelessWidget {
                                           height: 20,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  const BorderRadius
-                                                      .all(
+                                                  const BorderRadius.all(
                                                 Radius.circular(50),
                                               ),
-                                              color: AppConfig
-                                                  .kRecoveredColor),
+                                              color: AppConfig.kRecoveredColor),
                                         ),
                                         const SizedBox(
                                           width: 10,
                                         ),
                                         Text(
                                           'Recovered',
-                                          style: AppConfig
-                                              .kSize24WeightBold,
+                                          style: AppConfig.kSize24WeightBold,
                                           textAlign: TextAlign.center,
                                         ),
                                       ],
@@ -227,15 +207,13 @@ class HomeWidget extends StatelessWidget {
                                   ),
                                   Text(
                                     recoveredText,
-                                    style: AppConfig
-                                        .kSize24WeightBoldColorBlue,
+                                    style: AppConfig.kSize24WeightBoldColorBlue,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text('New recovered +',
                                           style: AppConfig.kSize14),
@@ -264,8 +242,7 @@ class HomeWidget extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
                                         Container(
@@ -273,20 +250,17 @@ class HomeWidget extends StatelessWidget {
                                           height: 20,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  const BorderRadius
-                                                      .all(
+                                                  const BorderRadius.all(
                                                 Radius.circular(50),
                                               ),
-                                              color: AppConfig
-                                                  .kDangerColor),
+                                              color: AppConfig.kDangerColor),
                                         ),
                                         const SizedBox(
                                           width: 10,
                                         ),
                                         Text(
                                           'Deaths',
-                                          style: AppConfig
-                                              .kSize24WeightBold,
+                                          style: AppConfig.kSize24WeightBold,
                                           textAlign: TextAlign.center,
                                         ),
                                       ],
@@ -294,22 +268,20 @@ class HomeWidget extends StatelessWidget {
                                   ),
                                   Text(
                                     deathText,
-                                    style: AppConfig
-                                        .kSize24WeightBoldColorRed,
+                                    style: AppConfig.kSize24WeightBoldColorRed,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text('New deaths +',
                                           style: AppConfig.kSize14),
                                       Text(
                                         newDeathText,
-                                        style: AppConfig
-                                            .kSize14WeightBoldColorRed,
+                                        style:
+                                            AppConfig.kSize14WeightBoldColorRed,
                                       )
                                     ],
                                   ),
@@ -530,8 +502,9 @@ class HomeWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 50,),
-
+            const SizedBox(
+              height: 50,
+            ),
           ],
         ),
       ),

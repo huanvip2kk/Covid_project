@@ -35,8 +35,7 @@ class Covid19App extends StatelessWidget {
         title: 'Covid-19 tracking app',
         theme: theme,
         darkTheme: darkTheme,
-        initialRoute: RouteDefine.countryScreen.name,
-
+        initialRoute: RouteDefine.landingPage.name,
       ),
     );
   }
