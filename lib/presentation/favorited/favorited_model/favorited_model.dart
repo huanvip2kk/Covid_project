@@ -1,5 +1,6 @@
 
-import 'package:covid_19/presentation/favorited/favorited_database/favorited_database_helper.dart';
+
+import 'package:covid_19/presentation/favorited/favorited_database_helper/favorited_database_helper.dart';
 
 class FavoritedModel {
   String? countryName;
