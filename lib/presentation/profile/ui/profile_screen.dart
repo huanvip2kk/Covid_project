@@ -105,8 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const Text(
                                 "You're not login? ",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24),
+                                    fontWeight: FontWeight.bold, fontSize: 24),
                               ),
                               ElevatedButton(
                                 onPressed: () {
@@ -132,8 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Expanded(
                           child: GestureDetector(
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 8, bottom: 8),
+                              padding:
+                                  const EdgeInsets.only(right: 8, bottom: 8),
                               child: SizedBox(
                                 height: 160,
                                 child: Card(
@@ -148,8 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             color: Colors.red,
                                             elevation: 5,
                                             child: Padding(
-                                              padding:
-                                              EdgeInsets.all(8.0),
+                                              padding: EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.favorite,
                                                 color: Colors.white,
@@ -166,8 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             'Favorited',
                                             style: TextStyle(
                                                 fontSize: 24,
-                                                fontWeight:
-                                                FontWeight.w500),
+                                                fontWeight: FontWeight.w500),
                                           ),
                                         ),
                                       )
@@ -177,62 +174,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             onTap: () {
-                              Navigator.pushNamed(context,
-                                  RouteDefine.favoritedScreen.name);
+                              Navigator.pushNamed(
+                                  context, RouteDefine.favoritedScreen.name);
                             },
                           ),
                         ),
                         Expanded(
                             child: GestureDetector(
-                              child: Padding(
-                                padding:
-                                const EdgeInsets.only(left: 8, bottom: 8),
-                                child: SizedBox(
-                                  height: 160,
-                                  child: Card(
-                                    elevation: 5,
-                                    child: Column(
-                                      children: const [
-                                        Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Card(
-                                              color: Colors.blue,
-                                              elevation: 5,
-                                              child: Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Icon(
-                                                  Icons.settings,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8, bottom: 8),
+                            child: SizedBox(
+                              height: 160,
+                              child: Card(
+                                elevation: 5,
+                                child: Column(
+                                  children: const [
+                                    Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Card(
+                                          color: Colors.blue,
+                                          elevation: 5,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.settings,
+                                              color: Colors.white,
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Text(
-                                              'Settings',
-                                              style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight:
-                                                  FontWeight.w500),
-                                            ),
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                    Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text(
+                                          'Settings',
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, RouteDefine.settingsScreen.name);
-                              },
-                            )),
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RouteDefine.settingsScreen.name);
+                          },
+                        )),
                       ],
                     ),
                   )
@@ -312,8 +307,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
                                                       mainAxisAlignment:
@@ -321,7 +315,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .spaceBetween,
                                                       children: [
                                                         const Text(
-                                                          'Add new course',
+                                                          'Change profile',
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -332,7 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           onPressed: () {
                                                             _showPicker();
                                                           },
-                                                          icon:const Icon(
+                                                          icon: const Icon(
                                                             FontAwesomeIcons
                                                                 .cameraRetro,
                                                           ),
@@ -381,13 +375,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 .add(
                                                                   ProfileChangeEvent(
                                                                       username:
-                                                                          nameController.text),
+                                                                          nameController
+                                                                              .text),
                                                                 );
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
                                                           },
-                                                          child: const Text('Ok'),
+                                                          child:
+                                                              const Text('Ok'),
                                                         ),
                                                       ],
                                                     )
@@ -438,8 +434,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 color: Colors.red,
                                                 elevation: 5,
                                                 child: Padding(
-                                                  padding:
-                                                      EdgeInsets.all(8.0),
+                                                  padding: EdgeInsets.all(8.0),
                                                   child: Icon(
                                                     Icons.favorite,
                                                     color: Colors.white,
@@ -473,56 +468,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             Expanded(
-                                child: GestureDetector(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8, bottom: 8),
-                                child: SizedBox(
-                                  height: 160,
-                                  child: Card(
-                                    elevation: 5,
-                                    child: Column(
-                                      children: const [
-                                        Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Card(
-                                              color: Colors.blue,
-                                              elevation: 5,
-                                              child: Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Icon(
-                                                  Icons.settings,
-                                                  color: Colors.white,
+                              child: GestureDetector(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 8),
+                                  child: SizedBox(
+                                    height: 160,
+                                    child: Card(
+                                      elevation: 5,
+                                      child: Column(
+                                        children: const [
+                                          Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Align(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Card(
+                                                color: Colors.blue,
+                                                elevation: 5,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Icon(
+                                                    Icons.settings,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Text(
-                                              'Settings',
-                                              style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight:
-                                                      FontWeight.w500),
+                                          Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Align(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Text(
+                                                'Settings',
+                                                style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RouteDefine.settingsScreen.name);
+                                },
                               ),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, RouteDefine.settingsScreen.name);
-                              },
-                            )),
+                            ),
                           ],
                         ),
                         Row(
@@ -546,8 +542,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 color: Colors.orange,
                                                 elevation: 5,
                                                 child: Padding(
-                                                  padding:
-                                                      EdgeInsets.all(8.0),
+                                                  padding: EdgeInsets.all(8.0),
                                                   child: Icon(
                                                     Icons.lightbulb,
                                                     color: Colors.white,
@@ -596,8 +591,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 color: Colors.red,
                                                 elevation: 5,
                                                 child: Padding(
-                                                  padding:
-                                                      EdgeInsets.all(8.0),
+                                                  padding: EdgeInsets.all(8.0),
                                                   child: Icon(
                                                     Icons.logout,
                                                     color: Colors.white,
@@ -614,8 +608,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 'Logout',
                                                 style: TextStyle(
                                                     fontSize: 24,
-                                                    fontWeight:
-                                                        FontWeight.w500,
+                                                    fontWeight: FontWeight.w500,
                                                     color: Colors.white),
                                               ),
                                             ),
