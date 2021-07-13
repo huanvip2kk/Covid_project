@@ -341,7 +341,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           nameController,
                                                       decoration:
                                                           const InputDecoration(
-                                                        labelText: 'Title',
+                                                        labelText: 'User name',
                                                         border:
                                                             OutlineInputBorder(),
                                                       ),
